@@ -1,0 +1,39 @@
+version: "3"
+services:
+    app:
+        build: ./app
+        image: app
+        container_name: ${CONTAINER_PREFIX}.app
+        volumes:
+            - ./app:/var/www/app
+    php-fpm:
+        build: ./php-fpm
+        image: php-fpm
+        container_name: ${CONTAINER_PREFIX}.php
+        volumes:
+            - ./app:/var/www/app
+            - ./php-fpm/conf.d/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+            - ./php-fpm/php.ini:/usr/local/etc/php/php.ini
+    nginx:
+        build: ./nginx
+        image: nginx
+        container_name: ${CONTAINER_PREFIX}.nginx
+        ports:
+            - "${NGINX_PORT}:80"
+        volumes:
+            - ./app:/var/www/app
+            - ./nginx/conf/nginx.conf:/etc/nginx/conf/nginx.conf:ro
+            - ./nginx/conf.d:/etc/nginx/conf.d:ro
+            - ./logs/nginx/:/var/log/nginx
+    mysql:
+        image: mysql
+        container_name: ${CONTAINER_PREFIX}.mysql
+        ports:
+            - ${DB_PORT}:3306
+        volumes:
+            - ./mysql:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+            - MYSQL_USER=${MYSQL_USER}
+            - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+            - MYSQL_DATABASE=${MYSQL_DATABASE}
