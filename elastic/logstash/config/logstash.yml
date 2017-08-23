@@ -1,0 +1,7 @@
+pipeline:
+  batch:
+    size: ${BATCH_SIZE:125}
+    delay: ${BATCH_DELAY:5}
+http:
+  host: "elasticsearch"
+  port: 9200

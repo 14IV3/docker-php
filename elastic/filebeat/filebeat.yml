@@ -1,0 +1,16 @@
+#----------------------------- Logstash input --------------------------------
+filebeat.prospectors:
+- type: log
+  enabled: true
+  reload.enabled: true
+  reload.period: 10s
+  paths:
+    - /Users/34iv/homestead/demo_elastic_stack/app/var/logs/dev.log
+
+#----------------------------- Logstash output --------------------------------
+output.logstash:
+  hosts: ["127.0.0.1:5044"]
+#output.elasticsearch:
+#  hosts: ["127.0.0.1:9200"]
+#  username: elastic
+#  password: changeme

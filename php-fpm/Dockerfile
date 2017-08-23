@@ -12,6 +12,7 @@ RUN docker-php-ext-configure intl \
     --with-xpm-dir=/usr/include/
 RUN docker-php-ext-install -j$(nproc) gd iconv pdo pdo_pgsql pdo_mysql curl \
     mcrypt mbstring json xml xmlrpc zip bcmath intl opcache
+RUN docker-php-ext-install pcntl
 # Install xDebug and Redis
 RUN docker-php-source extract \
     && pecl install xdebug redis \
