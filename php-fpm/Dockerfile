@@ -4,15 +4,17 @@ ENV WORKDIR "/var/www/app"
 RUN apk upgrade --update && apk --no-cache add \
     gcc g++ make git autoconf tzdata openntpd libcurl curl-dev coreutils \
     libmcrypt-dev freetype-dev libxpm-dev libjpeg-turbo-dev libvpx-dev \
-    libpng-dev openssl-dev libxml2-dev postgresql-dev icu-dev
+    libpng-dev openssl libxml2-dev postgresql-dev icu-dev
+
 RUN docker-php-ext-configure intl \
     && docker-php-ext-configure opcache \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ \
     --with-jpeg-dir=/usr/include/ --with-png-dir=/usr/include/ \
     --with-xpm-dir=/usr/include/
 RUN docker-php-ext-install -j$(nproc) gd iconv pdo pdo_pgsql pdo_mysql curl \
-    mcrypt mbstring json xml xmlrpc zip bcmath intl opcache
+    mbstring json xml xmlrpc zip bcmath intl opcache
 RUN docker-php-ext-install pcntl
+
 # Install xDebug and Redis
 RUN docker-php-source extract \
     && pecl install xdebug redis \
